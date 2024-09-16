@@ -1,6 +1,6 @@
 # Retrieval Augmented Generation (RAG) Project
 
-This project involves Retrieval Augmented Generation (RAG), a method that combines retrieval and generation models to enhance the ability to generate responses based on retrieved information.
+This project involves Retrieval Augmented Generation (RAG), a method that combines retrieval and generation models to enhance the ability to generate responses based on retrieved information. Specifically, this project focuses on answering questions about the US election in 2024 using a database of articles from various news sources.
 
 ## Prerequisites
 
