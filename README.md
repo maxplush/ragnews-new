@@ -1,4 +1,4 @@
-# Retrieval Augmented Generation (RAG) Project
+# Retrieval Augmented Generation (RAG) News Project ![](https://github.com/maxplush/docsum-vim/blob/main/.github/workflows/tests/badge.svg)
 
 This project involves Retrieval Augmented Generation (RAG), a method that combines retrieval and generation models to enhance the ability to generate responses based on retrieved information. Specifically, this project focuses on answering questions about the US election in 2024 using a database of articles from various news sources.
 
