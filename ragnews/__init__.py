@@ -27,8 +27,8 @@ client = Groq(
     api_key=os.environ.get("GROQ_API_KEY"),
 )
 
-# change model to 'llama-3.1-70b-versatile'
-def run_llm(system, user, model='llama3-8b-8192', seed=None):
+# changed model to 'llama-3.1-70b-versatile' from old 'llama3-8b-8192
+def run_llm(system, user, model='llama-3.1-70b-versatile', seed=None):
     '''
     This is a helper function for all the uses of LLMs in this file.
     '''
