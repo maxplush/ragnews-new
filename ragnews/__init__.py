@@ -111,7 +111,7 @@ def _catch_errors(func):
 ################################################################################
 
 
-def rag(text, db):
+def rag(text, db, keywords_text=None):
     '''
     This function uses retrieval augmented generation (RAG) to generate an LLM response to the input text.
     The db argument should be an instance of the `ArticleDB` class that contains the relevant documents to use.
@@ -120,9 +120,12 @@ def rag(text, db):
     There are no test cases because:
     1. the answers are non-deterministic (both because of the LLM and the database), and
     2. evaluating the quality of answers automatically is non-trivial.
-
+ 
     '''
-    keywords = extract_keywords(text)
+    if keywords_text is None:
+        keywords_text = text
+    
+    keywords = extract_keywords(keywords_text)
     articles = db.find_articles(query = keywords)
 
     system = f"You are a professional journalist assigned with answering a question from a reader using a set of articles provided to you as context."
