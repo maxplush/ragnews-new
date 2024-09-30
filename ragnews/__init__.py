@@ -60,17 +60,11 @@ def translate_text(text):
 
 
 def extract_keywords(text, seed=None):
-    system_prompt = '''You are an AI assistant responsible for extracting relevant keywords from a given text. Your objective is to generate a comprehensive list of keywords that encapsulate the main ideas, topics, and concepts within the text. Along with the primary concepts, include related terms that provide additional context or insight.
-
-Your output should be a list of keywords that reflect both the central content and associated ideas. Aim to identify key concepts, entities, actions, and themes. Include as many relevant and related words as possible to capture the full scope of the text.
-
-Ensure that your output is a space-separated list of keywords. Avoid punctuation, formatting, or additional commentary. The list should be concise and focused solely on meaningful terms that contribute to understanding the text. Exclude common filler words such as “the,” “is,” “and,” “of,” etc.
-
-If the text covers complex or broad topics, include related concepts to give a more complete picture. There is no need to limit yourself to the most obvious keywords—include all relevant and useful words that help elaborate on the main ideas.
-
-Your result should consist only of space-separated keywords. Do not add explanations, notes, or extra text. Focus on delivering as many relevant words as possible, including compound terms (e.g., "climate change") separated by spaces, without any punctuation.
-
-**Output only the space-separated list of keywords.** Ensure that the list is free from any additional labels, numbers, or formatting. Your task is to provide a comprehensive set of keywords reflecting the text’s main ideas and associated concepts.'''
+    system_prompt = '''
+    Extract 5 keywords from this text and return only 1 line with each keyword separated by a space.
+    That will help the user find the answer to the question if they plugged it into a google search.
+    Make sure these keywords are not broad and will not lead the user to the wrong answer.
+    '''
 
     # Define the user prompt as the input text
     user_prompt = f"Extract keywords from the following text: {text}"
@@ -217,15 +211,21 @@ class ArticleDB:
         # Create a string for the MATCH operator with all keywords
         match_string = query
 
-        sql = f"""
-        SELECT title, text, hostname, url, publish_date, crawl_date, lang, en_translation, en_summary 
-        FROM articles 
-        WHERE articles MATCH ? 
-        ORDER BY bm25(articles) ASC 
-        LIMIT ?;
-        """
+        sql = '''
+        SELECT rowid, title, text, hostname, url, publish_date, crawl_date, lang, en_translation, en_summary, rank,
+               -rank * :timebias_alpha / (julianday('now') - julianday(publish_date) + :timebias_alpha) AS relevancy
+        FROM articles
+        WHERE articles MATCH :query
+        ORDER BY relevancy DESC
+        LIMIT :limit;
+        '''
+        # TODO Consider term relevancy reranking https://pastebin.com/raw/pW4dP2Qc
+        # Remove or escape special characters, but preserve Unicode word characters
+        query = re.sub(r'[^\w\s]', '', query, flags=re.UNICODE)
 
-        cursor.execute(sql, (match_string, limit))
+        _logsql(sql)
+        cursor = self.db.cursor()
+        cursor.execute(sql, {'timebias_alpha': timebias_alpha, 'query': query, 'limit': limit})
         rows = cursor.fetchall()
 
         # Extract the column names from cursor description
