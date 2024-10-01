@@ -50,7 +50,7 @@ In short, the articles suggest that Trump has a strong anti-abortion stance, aim
 
 ## Example Usage of Evaluate 
 ```
-python3 ragnews/evaluate.py --data 
+python3 ragnews/evaluate.py --data "hairy-trumpet/data/wiki__page=2024_United_States_presidential_election,recursive_depth=0__dpsize=paragraph,transformations=[canonicalize, group, rmtitles, split]"
 ```
 
 ```
@@ -58,8 +58,4 @@ Number Correct: 95
 Total Test Cases: 127
 Accuracy: 74.80%
 ```
-Here is a screenshot documenting my accuracy score:
-
-![Screenshot of my project](./images/part1.png)
-![Screenshot of my project](./images/part2.png)
 
