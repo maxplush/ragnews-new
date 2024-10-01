@@ -91,6 +91,9 @@ if __name__ == '__main__':
         # print(prediction)
         # print(text_case["masks"])
 
+    success_ratio = n_correct / n_tests
+
+    # print('Success ratio: %.2f' % success_ratio)
     # # Calculate percentage of correct predictions
     # percentage_correct = (n_correct / n_tests) * 100
 
