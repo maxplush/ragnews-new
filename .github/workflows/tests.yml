@@ -19,14 +19,20 @@ jobs:
         python-version: 3.8
     - name: Install expect
       run: sudo apt-get update && sudo apt-get install -y expect
-    - name: install dependencies
+    - name: Install dependencies
       run: |
         python -m pip install --upgrade pip
         if [ -f requirements.txt ]; then pip install -r requirements.txt; fi
-    - name: run evaluate.py and check correct_ratio
+    - name: Check PYTHONPATH
       run: |
+        export | grep PYTHON
+        echo "Current directory: $(pwd)"
         export PYTHONPATH=.
+        echo "PYTHONPATH set to: $PYTHONPATH"
+    - name: Run evaluate.py and check correct_ratio
+      run: |
         output=$(python3 ragnews/evaluate.py)  # Removed --data argument
+        echo "$output"  # Print output for debugging
         correct_ratio=$(echo "$output" | grep -oP 'Correct Ratio: \K[0-9.]+')
         if (( $(echo "$correct_ratio > 0.7" | bc -l) )); then
           echo "Test passed"
@@ -34,6 +40,7 @@ jobs:
           echo "Test failed"
           exit 1
         fi
+
   test_python_39:
     runs-on: ubuntu-latest
     env:
@@ -46,14 +53,20 @@ jobs:
         python-version: 3.9
     - name: Install expect
       run: sudo apt-get update && sudo apt-get install -y expect
-    - name: install dependencies
+    - name: Install dependencies
       run: |
         python -m pip install --upgrade pip
         if [ -f requirements.txt ]; then pip install -r requirements.txt; fi
-    - name: run evaluate.py and check correct_ratio
+    - name: Check PYTHONPATH
       run: |
+        export | grep PYTHON
+        echo "Current directory: $(pwd)"
         export PYTHONPATH=.
+        echo "PYTHONPATH set to: $PYTHONPATH"
+    - name: Run evaluate.py and check correct_ratio
+      run: |
         output=$(python3 ragnews/evaluate.py)  # Removed --data argument
+        echo "$output"  # Print output for debugging
         correct_ratio=$(echo "$output" | grep -oP 'Correct Ratio: \K[0-9.]+')
         if (( $(echo "$correct_ratio > 0.7" | bc -l) )); then
           echo "Test passed"
