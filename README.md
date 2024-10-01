@@ -59,6 +59,6 @@ Total Test Cases: 127
 Accuracy: 74.80%
 ```
 
-![Screenshot of my project](images/Screenshot%202024-09-30%20at%2011.30.48%20PM.png)
-![Screenshot of my project](images/Screenshot%202024-09-30%20at%2011.31.37%20PM.png)
+![Screenshot of my project](images/Screenshot_2024-09-30_at_11.30.48_PM.png)
+![Screenshot of my project](images/Screenshot_2024-09-30_at_11.31.37_PM.png)
 
