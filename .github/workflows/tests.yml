@@ -42,10 +42,6 @@ jobs:
       - name: Install expect
         run: sudo apt-get update && sudo apt-get install -y expect
 
-      - name: Run all files
-        run: |
-          echo 'spawn python3 ragnews.py; expect "ragnews> "; send "Sample input\r"; interact' | expect
-
       - name: Run evaluation test
         run: |
           python3 ragnews/evaluate.py --data "hairy-trumpet/data/wiki__page=2024_United_States_elections,recursive_depth=0__dpsize=paragraph,transformations=[canonicalize, group, rmtitles, split]" | tee output.log
@@ -92,11 +88,6 @@ jobs:
 
       - name: Install expect
         run: sudo apt-get update && sudo apt-get install -y expect
-
-      - name: Run all files
-        run: |
-          echo 'spawn python3 ragnews.py; expect "ragnews> "; send "Sample input\r"; interact' | expect
-
       - name: Run evaluation test
         run: |
           python3 ragnews/evaluate.py --data "hairy-trumpet/data/wiki__page=2024_United_States_elections,recursive_depth=0__dpsize=paragraph,transformations=[canonicalize, group, rmtitles, split]" | tee output.log
