@@ -30,15 +30,15 @@ class RAGEvaluator:
         # you might think about:
         # calling the ragnews.run_llm function directly;
         # so we will call the ragnews.rag function
-
-        valid_labels = ['Harris', 'Trump']
+        valid_labels_list = ', '.join(self.valid_labels)
+        # valid_labels = ['Harris', 'Trump']
 
         db = ragnews.ArticleDB('ragnews.db')
         textprompt = f'''
 This is a fancier question that is based on standard cloze style benchmarks.
 I'm going to provide you a sentence, and that sentence will have a masked token inside of it: [MASK0].
 And your job is to tell me what the value of that masked token was.
-Valid values include: {valid_labels}
+Valid values include: {valid_labels_list}
 
 If the answer is a name return only the last name. 
 Return only one word!
@@ -55,21 +55,6 @@ OUTPUT: '''
         output = ragnews.rag(textprompt, db, keywords_text=masked_text)
         return output
     
-
-    # tweak hyperparmaters 
-    # goal is to run through the data points on 70% acccuracy 
-    # implment a for loop that calls a predict function on each line of that file, checks to see if is correct
-    # to see if our version is better for the predict function
-
-    # add the logging
-    # steps to run 
-    # ensure you are on evaluate branch and ragnews-new directory
-    # python3 -i ragnews/evaluate.py                     
-    # model = RAGEvaluator()
-    # model.predict('[MASK0] is the democratic nominee')
-
-
-
 if __name__ == '__main__':
     import argparse
     import json
@@ -126,18 +111,16 @@ if __name__ == '__main__':
 
     # print("Number Correct:", n_correct)
     # print("Total Test Cases:", n_tests)
+    # percentage_correct = (n_correct / n_tests) * 100
+    # print(f"Accuracy: {percentage_correct:.2f}%")
 
 
 
-
-    # print(f"Processed {args.data}: {(data[0])} data points and {(labels)} unique labels.")
-
-
-    # TODO: Need to improve accuracy and also update readme to reflect running code 
-    # python3 ragnews/evaluate.py --data "/Users/maxplush/Documents/ragnews-new/hairy-trumpet/data/wiki__page=2024_United_States_elections,recursive_depth=1__dpsize=sentence,transformations=[canonicalize, group, rmtitles, split]"
-    # could improve system prompts or other hyper paremeters
-
-
+    # steps to run 
+    # ensure you are on evaluate branch and ragnews-new directory
+    # python3 -i ragnews/evaluate.py                     
+    # model = RAGEvaluator()
+    # model.predict('[MASK0] is the democratic nominee')
 
 
     
