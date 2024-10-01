@@ -60,6 +60,6 @@ Accuracy: 74.80%
 ```
 Here is a screenshot documenting my accuracy score:
 
-![Screenshot of my project](.images/part1.png)
-![Screenshot of my project](.images/part2.png)
+![Screenshot of my project](./images/part1.png)
+![Screenshot of my project](./images/part2.png)
 
