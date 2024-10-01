@@ -28,7 +28,7 @@ client = Groq(
 )
 
 # changed model to 'llama-3.1-70b-versatile' from old 'llama3-8b-8192
-def run_llm(system, user, model='llama3-8b-8192', seed=None):
+def run_llm(system, user, model='llama-3.1-70b-versatile', seed=None):
     '''
     This is a helper function for all the uses of LLMs in this file.
     '''
