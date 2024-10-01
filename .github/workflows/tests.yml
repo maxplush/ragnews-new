@@ -7,54 +7,55 @@ on:
     branches: ['*']
 
 jobs:
-  test_python_38:
+  tests:
+    strategy:
+      matrix:
+        python: [3.8, 3.9]
     runs-on: ubuntu-latest
     env:
       GROQ_API_KEY: ${{ secrets.GROQ_API_KEY }}
+      PYTHONPATH: .
     steps:
-    - uses: actions/checkout@v2
-    - name: Set up Python 3.8
-      uses: actions/setup-python@v2
-      with:
-        python-version: 3.8
-    - name: Install dependencies
-      run: |
-        python -m pip install --upgrade pip
-        if [ -f requirements.txt ]; then pip install -r requirements.txt; fi
-    - name: Set Python Path and run evaluate.py
-      run: |
-        export PYTHONPATH=$PYTHONPATH:$(pwd)
-        python ragnews/evaluate.py > output.txt
-        ACCURACY=$(grep 'Accuracy:' output.txt | awk '{print $2}' | sed 's/%//')
-        if (( $(echo "$ACCURACY >= 70" | bc -l) )); then
-          echo "Accuracy is sufficient: $ACCURACY%"
-        else
-          echo "Accuracy is below the threshold: $ACCURACY%"
-          exit 1
-        fi
-
-  test_python_39:
-    runs-on: ubuntu-latest
-    env:
-      GROQ_API_KEY: ${{ secrets.GROQ_API_KEY }}
-    steps:
-    - uses: actions/checkout@v2
-    - name: Set up Python 3.9
-      uses: actions/setup-python@v2
-      with:
-        python-version: 3.9
-    - name: Install dependencies
-      run: |
-        python -m pip install --upgrade pip
-        if [ -f requirements.txt ]; then pip install -r requirements.txt; fi
-    - name: Set Python Path and run evaluate.py
-      run: |
-        export PYTHONPATH=$PYTHONPATH:$(pwd)
-        python ragnews/evaluate.py > output.txt
-        ACCURACY=$(grep 'Accuracy:' output.txt | awk '{print $2}' | sed 's/%//')
-        if (( $(echo "$ACCURACY >= 70" | bc -l) )); then
-          echo "Accuracy is sufficient: $ACCURACY%"
-        else
-          echo "Accuracy is below the threshold: $ACCURACY%"
-          exit 1
-        fi
+      - uses: actions/checkout@v2
+      - name: Initialize and update hairy-trumpet submodule
+        run: git submodule update --init --recursive hairy-trumpet
+      - name: Set up Python ${{matrix.python}}
+        uses: actions/setup-python@v2
+        with:
+          python-version: ${{matrix.python}}
+      - name: Install poppler
+        run: sudo apt-get install -y poppler-utils
+      - name: Install metahtml
+        run: |
+          cd metahtml
+          git init
+          git remote add origin https://github.com/mikeizbicki/metahtml
+          git config core.sparseCheckout true
+          echo '/*' > .git/info/sparse-checkout
+          echo '!/tests' >> .git/info/sparse-checkout
+          git pull origin master
+          pip install .
+          cd ..
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          if [ -f requirements.txt ]; then pip install -r requirements.txt; fi
+      - name: Run query tests
+        run: |
+          python3 ragnews/__init__.py --query "Who is the current democratic presidential nominee?"
+          python3 ragnews/__init__.py --query "What is the policy position of Trump related to illegal Mexican immigrants?"
+      - name: Run evaluation test
+        run: |
+          python3 ragnews/evaluate.py --data "hairy-trumpet/data/wiki__page=2024_United_States_elections,recursive_depth=0__dpsize=paragraph,transformations=[canonicalize, group, rmtitles, split]" | tee output.log
+          success_ratio=$(grep 'Success ratio:' output.log | awk '{print $3}')
+          echo "Success ratio: $success_ratio"  # Log the success ratio
+          if [[ -z "$success_ratio" ]]; then
+            echo "Error: Success ratio is empty or invalid"
+            exit 1
+          fi
+          if (( $(echo "$success_ratio > 0.7" | bc -l) )); then
+            echo "Test passed with success ratio $success_ratio"
+          else
+            echo "Test failed with success ratio $success_ratio"
+            exit 1
+          fi
