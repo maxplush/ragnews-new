@@ -79,8 +79,7 @@ if __name__ == '__main__':
             labels.update(dp['masks'])
 
     n_correct = 0
-    n_tests = 10
-    # n_tests = len(data)  # Run for all test cases
+    n_tests = len(data)  # Run for all test cases
     print(labels)
     evaluator = RAGEvaluator(valid_labels=labels)
 
@@ -92,8 +91,14 @@ if __name__ == '__main__':
         print(prediction)
         print(text_case["masks"])
 
-    success_ratio = n_correct / n_tests
-    print(success_ratio)
+    # success_ratio = n_correct / n_tests
+    # print(success_ratio)
+    
+    # Calculate percentage of correct predictions
+    percentage_correct = (n_correct / n_tests) * 100
+    print("Number Correct:", n_correct)
+    print("Total Test Cases:", n_tests)
+    print(f"Accuracy: {percentage_correct:.2f}%")
 
     # steps to run 
     # ensure you are on evaluate branch and ragnews-new directory

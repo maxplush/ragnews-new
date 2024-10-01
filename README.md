@@ -47,3 +47,17 @@ On the other hand, Kamala Harris, the 49th Vice President of the United States, 
 
 In short, the articles suggest that Trump has a strong anti-abortion stance, aiming to reverse Roe v. Wade, while Harris, as a pro-choice candidate, strives to protect and safeguard reproductive rights.
 ```
+
+## Example Usage of Evaluate 
+```
+python3 ragnews/evaluate.py
+```
+
+```
+Number Correct: 95
+Total Test Cases: 127
+Accuracy: 74.80%
+```
+
+![Screenshot of my project](images/Screenshot 2024-09-30 at 11.30.48 PM.pngg)
+![Screenshot of my project](images/Screenshot 2024-09-30 at 11.31.37 PM.png)
