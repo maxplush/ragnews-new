@@ -60,8 +60,8 @@ if __name__ == '__main__':
     import json
     import os
 
-    filepath = r"hairy-trumpet/data/short_test.json"
-
+    filepath = r"test_folder/short_test.json"
+    
     # Argument parser for command line arguments
     parser = argparse.ArgumentParser()
     parser.add_argument('--data', type=str, default=filepath)
