@@ -46,7 +46,7 @@ jobs:
       #     for i in {1..10}; do
       #       python -m doctest ragnews/__init__.py && break
       #     done
-      - name: run evaluation test
+      - name: run evaluation test!
         run: |
           python3 ragnews/evaluate.py --data "hairy-trumpet/data/wiki__page=2024_United_States_elections,recursive_depth=0__dpsize=paragraph,transformations=[canonicalize, group, rmtitles, split]" | tee output.log
           success_ratio=$(grep 'Success ratio:' output.log | awk '{print $3}')
