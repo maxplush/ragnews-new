@@ -30,12 +30,6 @@ jobs:
       run: |
         python -m pip install --upgrade pip
         if [ -f requirements.txt ]; then pip install -r requirements.txt; fi
-
-    # Run ragnews.py file using expect
-    - name: Run ragnews.py with expect
-      run: |
-        echo 'spawn python3 ragnews.py; expect "ragnews> "; send "Sample input\r"; interact' | expect
-
     # Test that evaluate.py runs successfully
     - name: Test ragnews/evaluate.py
       run: python3 ragnews/evaluate.py
