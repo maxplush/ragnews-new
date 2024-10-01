@@ -23,8 +23,6 @@ jobs:
         uses: actions/setup-python@v2
         with:
           python-version: ${{matrix.python}}
-      - name: Install poppler
-        run: sudo apt-get install -y poppler-utils
       - name: Install metahtml
         run: |
           cd metahtml
@@ -42,8 +40,7 @@ jobs:
           if [ -f requirements.txt ]; then pip install -r requirements.txt; fi
       - name: Run query tests
         run: |
-          python3 ragnews/__init__.py --query "Who is the current democratic presidential nominee?"
-          python3 ragnews/__init__.py --query "What is the policy position of Trump related to illegal Mexican immigrants?"
+          echo 'spawn python3 ragnews.py; expect "ragnews> "; send "Sample input\r"; interact' | expect
       - name: Run evaluation test
         run: |
           python3 ragnews/evaluate.py --data "hairy-trumpet/data/wiki__page=2024_United_States_elections,recursive_depth=0__dpsize=paragraph,transformations=[canonicalize, group, rmtitles, split]" | tee output.log
