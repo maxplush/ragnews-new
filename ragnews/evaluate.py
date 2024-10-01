@@ -80,7 +80,7 @@ if __name__ == '__main__':
 
     n_correct = 0
     n_tests = len(data)  # Run for all test cases
-    print(labels)
+    #print(labels)
     evaluator = RAGEvaluator(valid_labels=labels)
 
     # Iterate through all test cases
@@ -88,8 +88,8 @@ if __name__ == '__main__':
         prediction = evaluator.predict(text_case["masked_text"])
         if prediction == text_case["masks"][0]:
             n_correct += 1
-        print(prediction)
-        print(text_case["masks"])
+        # print(prediction)
+        # print(text_case["masks"])
 
     # Calculate percentage of correct predictions
     percentage_correct = (n_correct / n_tests) * 100
