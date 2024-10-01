@@ -50,7 +50,7 @@ In short, the articles suggest that Trump has a strong anti-abortion stance, aim
 
 ## Example Usage of Evaluate 
 ```
-python3 ragnews/evaluate.py
+python3 ragnews/evaluate.py --data 
 ```
 
 ```
@@ -58,7 +58,8 @@ Number Correct: 95
 Total Test Cases: 127
 Accuracy: 74.80%
 ```
+Here is a screenshot documenting my accuracy score:
 
-![Screenshot of my project](images/Screenshot_2024-09-30_at_11.30.48_PM.png)
-![Screenshot of my project](images/Screenshot_2024-09-30_at_11.31.37_PM.png)
+![Screenshot of my project](.images/part1.png)
+![Screenshot of my project](.images/part2.png)
 
