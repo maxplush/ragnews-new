@@ -61,15 +61,6 @@ OUTPUT: '''
     # implment a for loop that calls a predict function on each line of that file, checks to see if is correct
     # to see if our version is better for the predict function
 
-    # also maybe add this
-
-    # import logging
-    # logging.basicConfig(
-    # format='%(asctime)s %(levelname)-8s %(message)s',
-    # datefmt='%Y-%m-%d %H:%M:%S',
-    # level=logging.INFO,
-    # )
-
     # add the logging
     # steps to run 
     # ensure you are on evaluate branch and ragnews-new directory
@@ -103,18 +94,40 @@ if __name__ == '__main__':
             labels.update(dp['masks'])
 
     n_correct = 0
-    n_tests = 10
+    n_tests = len(data)  # Run for all test cases
     print(labels)
     evaluator = RAGEvaluator(valid_labels=labels)
-    for i, text_case in enumerate(data[:n_tests]):
+
+    # Iterate through all test cases
+    for i, text_case in enumerate(data):
         prediction = evaluator.predict(text_case["masked_text"])
         if prediction == text_case["masks"][0]:
             n_correct += 1
         print(prediction)
         print(text_case["masks"])
 
+    # Calculate percentage of correct predictions
+    percentage_correct = (n_correct / n_tests) * 100
+
     print("Number Correct:", n_correct)
     print("Total Test Cases:", n_tests)
+    print(f"Accuracy: {percentage_correct:.2f}%")
+
+    # n_correct = 0
+    # n_tests = 10
+    # print(labels)
+    # evaluator = RAGEvaluator(valid_labels=labels)
+    # for i, text_case in enumerate(data[:n_tests]):
+    #     prediction = evaluator.predict(text_case["masked_text"])
+    #     if prediction == text_case["masks"][0]:
+    #         n_correct += 1
+    #     print(prediction)
+    #     print(text_case["masks"])
+
+    # print("Number Correct:", n_correct)
+    # print("Total Test Cases:", n_tests)
+
+
 
 
     # print(f"Processed {args.data}: {(data[0])} data points and {(labels)} unique labels.")
