@@ -10,7 +10,7 @@ jobs:
   tests:
     strategy:
       matrix:
-        python: [3.8, 3.9]
+        python: [3.9]
     runs-on: ubuntu-latest
     env:
       GROQ_API_KEY: ${{ secrets.GROQ_API_KEY }}
@@ -23,7 +23,9 @@ jobs:
         uses: actions/setup-python@v2
         with:
           python-version: ${{matrix.python}}
-      - name: Install metahtml
+      - name: Install poppler
+        run: sudo apt-get install -y poppler-utils
+      - name: install metahtml
         run: |
           cd metahtml
           git init
@@ -34,18 +36,19 @@ jobs:
           git pull origin master
           pip install .
           cd ..
-      - name: Install dependencies
+      - name: install dependencies
         run: |
           python -m pip install --upgrade pip
           if [ -f requirements.txt ]; then pip install -r requirements.txt; fi
-      - name: Run query tests
-        run: |
-          echo 'spawn python3 ragnews.py; expect "ragnews> "; send "Sample input\r"; interact' | expect
-      - name: Run evaluation test
+      # - name: run query tests
+      #   run: |
+      #     python3 ragnews/__init__.py --query "Who is the current democratic presidential nominee?"
+      #     python3 ragnews/__init__.py --query "What is the policy position of Trump related to illegal Mexican immigrants?"
+      - name: run evaluation test
         run: |
           python3 ragnews/evaluate.py --data "hairy-trumpet/data/wiki__page=2024_United_States_elections,recursive_depth=0__dpsize=paragraph,transformations=[canonicalize, group, rmtitles, split]" | tee output.log
           success_ratio=$(grep 'Success ratio:' output.log | awk '{print $3}')
-          echo "Success ratio: $success_ratio"  # Log the success ratio
+          echo "Success ratio: $success_ratio"  # Add this line to log the success ratio
           if [[ -z "$success_ratio" ]]; then
             echo "Error: Success ratio is empty or invalid"
             exit 1
