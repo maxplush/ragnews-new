@@ -21,8 +21,9 @@ jobs:
       run: |
         python -m pip install --upgrade pip
         if [ -f requirements.txt ]; then pip install -r requirements.txt; fi
-    - name: Run evaluate.py and check accuracy
+    - name: Set Python Path and run evaluate.py
       run: |
+        export PYTHONPATH=$PYTHONPATH:$(pwd)
         python ragnews/evaluate.py > output.txt
         ACCURACY=$(grep 'Accuracy:' output.txt | awk '{print $2}' | sed 's/%//')
         if (( $(echo "$ACCURACY >= 70" | bc -l) )); then
@@ -46,8 +47,9 @@ jobs:
       run: |
         python -m pip install --upgrade pip
         if [ -f requirements.txt ]; then pip install -r requirements.txt; fi
-    - name: Run evaluate.py and check accuracy
+    - name: Set Python Path and run evaluate.py
       run: |
+        export PYTHONPATH=$PYTHONPATH:$(pwd)
         python ragnews/evaluate.py > output.txt
         ACCURACY=$(grep 'Accuracy:' output.txt | awk '{print $2}' | sed 's/%//')
         if (( $(echo "$ACCURACY >= 70" | bc -l) )); then
