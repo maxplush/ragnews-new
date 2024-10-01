@@ -110,11 +110,6 @@ if __name__ == '__main__':
     #     print(prediction)
     #     print(text_case["masks"])
 
-    # print("Number Correct:", n_correct)
-    # print("Total Test Cases:", n_tests)
-    # percentage_correct = (n_correct / n_tests) * 100
-    # print(f"Accuracy: {percentage_correct:.2f}%")
-
 
 
     # steps to run 
