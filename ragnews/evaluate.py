@@ -60,7 +60,7 @@ if __name__ == '__main__':
     import json
     import os
 
-    filepath = r"hairy-trumpet/data/wiki__page=2024_United_States_presidential_election,recursive_depth=0__dpsize=paragraph,transformations=[canonicalize, group, rmtitles, split]"
+    filepath = r"hairy-trumpet/data/short_test.json"
 
     # Argument parser for command line arguments
     parser = argparse.ArgumentParser()
@@ -79,20 +79,19 @@ if __name__ == '__main__':
             labels.update(dp['masks'])
 
     n_correct = 0
+    #n_tests = 10
     n_tests = len(data)  # Run for all test cases
     print(labels)
     evaluator = RAGEvaluator(valid_labels=labels)
 
     # Iterate through all test cases
+    # for i, text_case in enumerate(data[:n_tests]):
     for i, text_case in enumerate(data):
         prediction = evaluator.predict(text_case["masked_text"])
         if prediction == text_case["masks"][0]:
             n_correct += 1
-        print(prediction)
-        print(text_case["masks"])
-
-    # success_ratio = n_correct / n_tests
-    # print(success_ratio)
+        #print(prediction)
+        #print(text_case["masks"])
     
     # Calculate percentage of correct predictions
     percentage_correct = (n_correct / n_tests) * 100
